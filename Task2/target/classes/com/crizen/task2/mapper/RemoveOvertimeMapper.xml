@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.crizen.task2.mapper.RemoveOvertimeMapper">
+	
+	<!-- 삭제할 게시물 조회 -->
+	<select id="selectRemoveList" resultType="BoardVO">
+		SELECT * FROM COUNSEL_INFO
+		WHERE DATE(counsel_date) >= ADDDATE(now(), INTERVAL 5 DAY)
+	</select>
+	
+	<!-- 글 삭제 -->
+	<delete id="removeOvertime" parameterType="int">
+		DELETE FROM COUNSEL_INFO
+		WHERE seq_counsel = #{seq_counsel}
+	</delete>
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<typeAliases>
+		<typeAlias alias="BoardVO" type="com.crizen.task2.vo.BoardVO"></typeAlias>
+		<typeAlias alias="ReplyVO" type="com.crizen.task2.vo.ReplyVO"></typeAlias>
+		<typeAlias alias="SlangVO" type="com.crizen.task2.vo.SlangVO"></typeAlias>
+	</typeAliases>
+</configuration>
