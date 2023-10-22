@@ -23,6 +23,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="article">
+		<!-- 게시글 상세보기 영역 -->
 		<div class="text-center mb-4">
 			<h1 class="h3 mb-3 font-weight-normal">상세보기</h1>
 		</div>
@@ -48,31 +49,10 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="card p-3 m-3">
-			<table class="table table-striped table-sm">
-				<thead>
-					<tr>
-						<th scope="col" class="text-nowrap">NO.</th>
-						<th scope="col" class="text-nowrap">작성자</th>
-						<th scope="col" class="text-nowrap">내용</th>
-						<th scope="col" class="text-nowrap">수정/삭제</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="reply" items="${replyList }">
-						<tr>
-							<td class="text-nowrap">${reply.seq_reply }</td>
-							<td class="text-nowrap">${reply.reply_writer }</td>
-							<td>${reply.reply_content }</td>
-							<td class="text-nowrap">
-								<a class="btn btn-sm btn-outline-dark" id="replyModifyBtn" onclick="replyModify">수정</a>
-<%-- 								<a class="btn btn-sm btn-outline-dark" href="replyModifyForm.do?seq_reply=${reply.seq_reply }">수정</a> --%>
-								<a class="btn btn-sm btn-outline-dark" href="replyDelete.do?seq_reply=${reply.seq_reply }">삭제</a>
-							</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+		
+		<!-- 댓글 영역 -->
+		<div class="text-center mb-4">
+			<h1 class="h3 mb-3 font-weight-normal">댓글</h1>
 		</div>
 		<div class="card p-3 m-3">
 			<form action="replyWritePro.do" method="post">
@@ -84,16 +64,41 @@
 				</div>
 				<div class="form-row">
 					<div class="col">
-						<input type="text" name="reply_writer" class="form-control" placeholder="작성자">
+						<input type="text" name="reply_writer" class="form-control" placeholder="작성자" required="required">
 					</div>
 					<div class="col-8">
-						<input type="text" name="reply_content" class="form-control" placeholder="내용">
+						<textarea class="form-control" rows="1" name="reply_content" placeholder="내용" required="required"></textarea>
 					</div>
 					<div class="col text-center">
 						<button type="submit" class="btn btn-outline-dark">등록</button>
 					</div>
 				</div>
 			</form>
+		</div>
+		<div class="card p-3 m-3">
+			<table class="table table-sm">
+				<thead>
+					<tr>
+						<th scope="col" class="text-nowrap">NO.</th>
+						<th scope="col" class="text-nowrap">작성자</th>
+						<th scope="col" class="text-nowrap">내용</th>
+						<th scope="col" class="text-nowrap">수정/삭제</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="reply" items="${replyList }">
+						<tr id="replyTr${reply.seq_reply }">
+							<td class="text-nowrap">${reply.seq_reply }</td>
+							<td class="text-nowrap">${reply.reply_writer }</td>
+							<td id="replyContentArea">${reply.reply_content }</td>
+							<td class="text-nowrap">
+								<span id="replyModifyBtnArea"><a href="javascript:replyModifyForm(${reply.seq_reply })" class="btn btn-sm btn-outline-dark" id="replyModifyFormBtn">수정</a></span>
+								<a class="btn btn-sm btn-outline-dark" href="replyDelete.do?seq_reply=${reply.seq_reply }&seq_counsel=${reply.seq_counsel }">삭제</a>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 		<div class="text-center m-3">
 			<a class="btn btn-dark" href="boardDelete.do?seq_counsel=${board.seq_counsel }">삭제</a>
@@ -102,9 +107,34 @@
 	</div>
 	
 	<script type="text/javascript">
-		$(function() {
+		function replyModifyForm(seq_reply){
+			let replyContent = $("#replyTr" + seq_reply + " > #replyContentArea").text();
+			$("#replyTr" + seq_reply + " > #replyContentArea").html('<input type="text" name="reply_content" id="modifiedReplyContent" class="form-control" value="' + replyContent + '" required="required">')
+			$("#replyTr" + seq_reply + " #replyModifyBtnArea").html('<button onclick="replyModifySubmit(' + seq_reply + ')" class="btn btn-sm btn-outline-dark" id="replyModifySubmitBtn">수정</button>')
 			
-		});
+		}
+		
+		function replyModifySubmit(seq_reply){
+			let reply_content = $("#modifiedReplyContent").val();
+			
+			$.ajax({
+				type : "GET", 
+				url : "replyModifyPro.do", 
+				data : {seq_reply : seq_reply, reply_content : reply_content}, 
+				dataType : "text", 
+				success : function(result) {
+					if(result == "true"){
+						location.reload();
+					}else{
+						alert("댓글 수정 실패");
+					}
+				}, 
+				error : function() {
+					alert("요청실패");
+				}
+			});
+		}
+		
 	</script>
 </body>
 </html>

@@ -13,6 +13,7 @@
 			, #{counsel_writer}
 			, #{counsel_subject}
 			, #{counsel_content}
+<!-- 			, SUBDATE(now(), INTERVAL 5 DAY) -->
 			, now()
 			)
 	</insert>

@@ -5,7 +5,9 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
@@ -16,29 +18,36 @@
 	<!-- com.zaxxer.hikari 패키지의 HikariConfig 클래스 지정 및 속성 설정 -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mariadb://127.0.0.1:3306/test2"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mariadb://127.0.0.1:3308/test2"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="abcd0000!"></property>
 	</bean>
 	
+	<!-- 2. HikariCP 를 통해 커넥션을 관리하는 DataSource 객체(HikariDataSource) 설정 -->
+	<!-- 생성자 파라미터로 1번에서 생성한 HikariConfig 객체 전달 -->
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
 		<constructor-arg ref="hikariConfig"></constructor-arg>
 	</bean>
 	
+	<!-- 3. Connection 객체 생성, 쿼리 전달 및 결과 리턴 등의 작업을 수행할 SQLSessionFactory 객체 생성 -->
+	<!-- MyBatis - Spring 연결을 담당하며, 내부적으로 SQLSession 객체를 통해 작업 수행 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
 		<property name="mapperLocations" value="classpath:/com/crizen/task2/mapper/*Mapper.xml"></property>
 	</bean>
 	
+	<!-- 4. MyBatis 연동에 사용될 객체(클래스)들의 패키지 위치 지정(기본 루트 패키지 지정) -->
     <mybatis-spring:scan base-package="com.crizen.task2" />
     
     <context:annotation-config />
     
-	<bean id="removeOvertimeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.crizen.task2.mapper.RemoveOvertimeMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
+<!--     <task:annotation-driven/> -->
+<!--     <context:component-scan base-package="com.crizen.task2.scheduler"/> -->
+    
+	<bean id="removeOvertimeService" class="com.crizen.task2.service.RemoveOvertimeServiceImpl"/>
+	<bean id="modifySlangService" class="com.crizen.task2.service.ModifySlangServiceImpl"/>
+	
 
     <!-- 비속어 처리 Quartz 관련 설정 -->
     <!-- 실제 스케줄링될 태스크(세터주입될)와 JOB을 정의한 클래스 등록 -->
@@ -48,7 +57,7 @@
 		<!-- 실제 스케줄링될 JOB --> 
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="modifySlangService" value-ref="modifySlangService"/>
+				<entry key="modifySlang" value-ref="modifySlangService"/>
 			</map>
 		</property>
 		<property name="durability" value="true"/>
@@ -57,8 +66,7 @@
 	<!-- 정의한 작업(JOB) 을 어떤 주기로 실행할 것인지 정의 -->
 	<bean id="modifySlangTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="modifySlangJob"/><!-- 실행할 작업 -->
-		<property name="cronExpression" value="0 0/1 * * * ?"/><!-- 초 분 시 월 요일 년 -->
-<!-- 		<property name="cronExpression" value="0 0/3 * * * ?"/>초 분 시 월 요일 년 -->
+		<property name="cronExpression" value="0 0/3 * * * ?"/><!-- 초 분 시 월 요일 년 -->
 	</bean>
 	
 	
@@ -70,30 +78,20 @@
 		<!-- 실제 스케줄링될 JOB --> 
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="removeOvertimeService" value-ref="removeOvertimeService"/>
+				<entry key="removeOvertime" value-ref="removeOvertimeService"/>
 			</map>
 		</property>
 		<property name="durability" value="true"/>
 	</bean>
 
-<!-- <bean id="removeOvertimeJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
-<!-- 	<property name="targetObject" ref="removeOvertimeService" /> -->
-<!-- 	<property name="targetMethod" value="removeOvertime" /> -->
-<!-- 	<property name="concurrent" value="false" /> -->
-<!-- </bean> -->
-	
 	<!-- 정의한 작업(JOB) 을 어떤 주기로 실행할 것인지 정의 -->
 	<bean id="removeOvertimeTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="removeOvertimeJob"/><!-- 실행할 작업 -->
-		<property name="cronExpression" value="0 0/1 * * * ?"/><!-- 초 분 시 월 요일 년 -->
-<!-- 		<property name="cronExpression" value="0 0 8 * * ?"/>초 분 시 월 요일 년 -->
+		<property name="cronExpression" value="0 0 8 * * ?"/><!-- 초 분 시 월 요일 년 -->
 	</bean>
 	
 	
-	<!-- 
-	스케줄러 관리를 위한 SchedulerFactory를 정의.
-	JOB과 Trigger 함께 기술...?(Trigger만 기술...?) 
-	-->
+	<!-- 스케줄러 관리를 위한 SchedulerFactory를 정의 -->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="jobDetails">
 			<list>
@@ -111,4 +109,4 @@
 
 
 </beans>
- 
+

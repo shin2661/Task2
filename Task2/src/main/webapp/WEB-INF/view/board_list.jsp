@@ -23,6 +23,9 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="article">
+		<div class="text-center mb-4">
+				<h1 class="h3 mb-3 font-weight-normal">글목록</h1>
+			</div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -49,6 +52,7 @@
 				</c:forEach>
 			</tbody>
 		</table>
+		<a class="btn btn-sm btn-outline-dark" href="boardWriteForm.do">글쓰기</a>
 	</div>
 </body>
 </html>

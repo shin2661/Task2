@@ -22,10 +22,7 @@
 	<update id="updateReply">
 		UPDATE COUNSEL_REPLY
 		SET
-			, seq_reply = #{seq_reply}
-			, seq_counsel = #{seq_counsel}
-			, reply_writer = #{reply_writer}
-			, reply_content = #{reply_content}
+			reply_content = #{reply_content}
 			, reply_date = now()
 		WHERE seq_reply = #{seq_reply}
 	</update>

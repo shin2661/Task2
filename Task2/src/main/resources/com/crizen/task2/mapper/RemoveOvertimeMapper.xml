@@ -5,7 +5,7 @@
 	<!-- 삭제할 게시물 조회 -->
 	<select id="selectRemoveList" resultType="BoardVO">
 		SELECT * FROM COUNSEL_INFO
-		WHERE DATE(counsel_date) >= ADDDATE(now(), INTERVAL 5 DAY)
+		WHERE SUBDATE(now(), INTERVAL 5 DAY) >= DATE(counsel_date)
 	</select>
 	
 	<!-- 글 삭제 -->

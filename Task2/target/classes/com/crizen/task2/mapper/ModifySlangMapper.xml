@@ -6,85 +6,33 @@
 		SELECT * FROM SLANG
 	</select>
 	
-	<select id="selectBoardSlangList" resultType="BoardVO">
+	
+	<select id="selectBoardList" resultType="BoardVO">
 		SELECT * FROM COUNSEL_INFO
-		WHERE
-		<foreach collection="list" item="slang" separator="OR">
-			counsel_writer Like CONCAT("%", #{slang}, "%"}
-			OR counsel_subject Like CONCAT("%", #{slang}, "%"}
-			OR counsel_content Like CONCAT("%", #{slang}, "%"}
-		</foreach> 
-	</select>
-
-	<select id="selectReplySlangList" resultType="ReplyVO">
-		SELECT * FROM COUNSEL_REPLY
-		WHERE
-		<foreach collection="list" item="slang" separator="OR">
-			reply_writer Like CONCAT("%", #{slang}, "%"}
-			OR reply_content Like CONCAT("%", #{slang}, "%"}
-		</foreach> 
 	</select>
 	
+	<select id="selectReplyList" resultType="ReplyVO">
+		SELECT * FROM COUNSEL_REPLY
+	</select>
 	
 	<update id="updateBoardSlang">
-		UPDATE COUNSEL_INFO
-		SET 
-			counsel_writer = 
-				<choose>
-					<when test="counsel_writer in ('건성', '찌질', '말투', '뻔뻔', '싸가지')">
-						'*****'
-					</when>
-					<otherwise>
-						counsel_writer
-					</otherwise>
-				</choose>
-			counsel_subject = 
-				<choose>
-					<when test="counsel_subject in ('건성', '찌질', '말투', '뻔뻔', '싸가지')">
-						'*****'
-					</when>
-					<otherwise>
-						counsel_subject
-					</otherwise>
-				</choose>
-			counsel_content = 
-				<choose>
-					<when test="counsel_content in ('건성', '찌질', '말투', '뻔뻔', '싸가지')">
-						'*****'
-					</when>
-					<otherwise>
-						counsel_content
-					</otherwise>
-				</choose>
-		WHERE 
-			counsel_writer IN ('건성', '찌질', '말투', '뻔뻔', '싸가지')
-			OR counsel_subject IN ('건성', '찌질', '말투', '뻔뻔', '싸가지')
-			OR counsel_content IN ('건성', '찌질', '말투', '뻔뻔', '싸가지')
+	    UPDATE 
+	    	COUNSEL_INFO
+	    SET
+	        counsel_writer = #{counsel_writer}
+	        , counsel_subject = #{counsel_subject}
+	        , counsel_content = #{counsel_content}
+	    WHERE 
+	    	seq_counsel = #{seq_counsel}
+	</update>
+	
+	<update id="updateReplySlang">
+	    UPDATE 
+	    	COUNSEL_REPLY
+	    SET
+	    	reply_writer = #{reply_writer}
+	    	, reply_content = #{reply_content}
+	    WHERE seq_reply = #{seq_reply}
 	</update>
 
-	<update id="updateReplySlang">
-		UPDATE COUNSEL_INFO
-		SET 
-			reply_writer = 
-				<choose>
-					<when test="reply_writer in ('건성', '찌질', '말투', '뻔뻔', '싸가지')">
-						'*****'
-					</when>
-					<otherwise>
-						reply_writer
-					</otherwise>
-				</choose>
-			reply_content = 
-				<choose>
-					<when test="reply_content in ('건성', '찌질', '말투', '뻔뻔', '싸가지')">
-						'*****'
-					</when>
-					<otherwise>
-						reply_content
-					</otherwise>
-				</choose>
-		WHERE 
-			reply_writer IN ('건성', '찌질', '말투', '뻔뻔', '싸가지')
-			OR reply_content IN ('건성', '찌질', '말투', '뻔뻔', '싸가지')
-	</update>
 </mapper>

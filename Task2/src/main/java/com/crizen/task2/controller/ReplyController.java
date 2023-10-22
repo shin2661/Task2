@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.crizen.task2.service.ReplyService;
 import com.crizen.task2.vo.BoardVO;
@@ -31,12 +32,12 @@ public class ReplyController {
 			return "fail_back";
 		}
 	
-		return "redirect:/boardList.do";
+		return "redirect:/boardDetail.do?seq_counsel=" + reply.getSeq_counsel();
 	}
 	
 	// 댓글삭제
 	@RequestMapping("replyDelete.do")
-	public String replyDelete(@RequestParam int seq_reply, Model model) {
+	public String replyDelete(@RequestParam int seq_reply, @RequestParam int seq_counsel, Model model) {
 		log.info("boardDelete()");
 		
 		int deleteCount = service.removeReply(seq_reply);
@@ -46,11 +47,12 @@ public class ReplyController {
 			return "fail_back";
 		}
 		
-		return "redirect:/boardList.do";
+		return "redirect:/boardDetail.do?seq_counsel=" + seq_counsel;
 	}
 	
 	// 댓글수정
 	@RequestMapping("replyModifyPro.do")
+	@ResponseBody
 	public String replyModifyPro(ReplyVO reply, Model model) {
 		log.info("boardModifyPro()");
 		System.out.println(reply);
@@ -58,10 +60,9 @@ public class ReplyController {
 		int updateCount = service.modifyReply(reply);
 		
 		if(updateCount == 0) {
-			model.addAttribute("msg", "수정 실패");
-			return "fail_back";
+			return "false";
 		}
 		
-		return "redirect:/boardList.do";
+		return "true";
 	}
 }

@@ -9,15 +9,20 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script> 
 <link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
 <title>Insert title here</title>
+<style type="text/css">
+	.article{
+		width: 100%;
+		max-width: 650px;
+		padding: 15px;
+		margin: auto;
+	}
+</style>
 </head>
 <body>
-	<h1>main.jsp</h1>
-	<hr>
-	<h3>
-		<a href="boardWriteForm.do">글쓰기</a>
-	</h3>
-	<h3>
-		<a href="boardList.do">글목록조회</a>
-	</h3>
+	<jsp:include page="header.jsp"></jsp:include>
+	<div class="article">
+		<a href="boardWriteForm.do" class="btn btn-lg btn-block btn-outline-dark">글쓰기</a>
+		<a href="boardList.do" class="btn btn-lg btn-block btn-outline-dark">글목록조회</a>
+	</div>
 </body>
 </html>

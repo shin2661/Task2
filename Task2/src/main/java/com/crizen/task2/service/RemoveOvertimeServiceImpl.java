@@ -18,10 +18,9 @@ public class RemoveOvertimeServiceImpl implements RemoveOvertimeService {
 
 	@Autowired
 	private RemoveOvertimeMapper mapper;
-
+	
 	@Override
 	public void removeOvertime() {
-		System.out.println("----------------------------------RemoveOvertimeServiceImpl-----------------------------------------");
 		List<BoardVO> removeList = mapper.selectRemoveList();
 		
 		System.out.println(removeList);
@@ -30,17 +29,12 @@ public class RemoveOvertimeServiceImpl implements RemoveOvertimeService {
 			mapper.removeOvertime(board.getSeq_counsel());
 		}
 		
-		log.info("========== 게시물 삭제 ==========");
+		log.info("=============== 게시물 삭제 ===============");
 		log.info("게시물 : " + removeList.size() + "개 삭제 완료");
-		log.info("=================================");
+		log.info("===========================================");
 		
 	}
 	
-//	private final RemoveOvertimeMapper mapper;
-//	
-//	public RemoveOvertimeServiceImpl(RemoveOvertimeMapper mapper) {
-//		this.mapper = mapper;
-//	}
 	
 
 }

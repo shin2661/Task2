@@ -22,30 +22,19 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="article">
-		<form class="form-signin" action="boardWritePro.do">
+		<form class="form-signin" action="#">
 			<div class="text-center mb-4">
-				<h1 class="h3 mb-3 font-weight-normal">글쓰기</h1>
+				<h1 class="h3 mb-3 font-weight-normal">비속어등록</h1>
 			</div>
 			<table class="table table-borderless">
 				<tbody>
 					<tr>
 						<th scope="row">작성자</th>
-						<td><input type="text" name="counsel_writer" class="form-control" required="required" autofocus=""></td>
-					</tr>
-					<tr>
-						<th scope="row">제목</th>
-						<td><input type="text" name="counsel_subject" class="form-control" required="required" autofocus=""></td>
-					</tr>
-					<tr>
-						<th scope="row">내용</th>
-						<td><textarea class="form-control" rows="3" name="counsel_content" required="required"></textarea></td>
+						<td><input type="text" name="slang" class="form-control" placeholder="비속어를 입력해주세요" required="required" autofocus=""></td>
 					</tr>
 				</tbody>
 			</table>
-		  <div class="text-center">
-			  <button onclick="history.back()" class="btn btn-outline-dark" type="button">뒤로가기</button>
-			  <button class="btn btn-dark" type="submit">글등록</button>
-		  </div>
+		  <div class="text-center"><button class="btn btn-dark" type="submit">비속어등록</button></div>
 		</form>
 	</div>
 </body>
