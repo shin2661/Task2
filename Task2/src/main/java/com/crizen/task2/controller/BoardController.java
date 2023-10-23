@@ -27,7 +27,7 @@ public class BoardController {
 	public String main() {
 		log.info("main()");
 		
-		return "main";
+		return "redirect:/";
 	}
 
 	// 글등록 폼으로 이동

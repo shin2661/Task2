@@ -3,7 +3,6 @@
 <div class="container my-3">
 	<nav class="navbar navbar-expand-lg navbar-light">
 		<a class="navbar-brand" href="main.do">Home</a>
-	<!-- 	<a class="navbar-brand" href="main.do">Home</a> -->
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -15,6 +14,9 @@
 				<li class="nav-item">
 					<a class="nav-link" href="boardList.do">글목록</a>
 				</li>
+<!-- 				<li class="nav-item"> -->
+<!-- 					<a class="nav-link" href="slangRegistForm.do">비속어등록</a> -->
+<!-- 				</li> -->
 			</ul>
 		</div>
 	</nav>

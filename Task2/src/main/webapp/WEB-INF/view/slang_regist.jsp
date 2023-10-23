@@ -22,7 +22,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="article">
-		<form class="form-signin" action="#">
+		<form class="form-signin" action="slangRegistPro.do">
 			<div class="text-center mb-4">
 				<h1 class="h3 mb-3 font-weight-normal">비속어등록</h1>
 			</div>

@@ -24,6 +24,7 @@
 		<div class="article">
 			<a href="boardWriteForm.do" class="btn btn-lg btn-block btn-outline-dark">글쓰기</a>
 			<a href="boardList.do" class="btn btn-lg btn-block btn-outline-dark">글목록조회</a>
+<!-- 			<a href="registSlangForm.do" class="btn btn-lg btn-block btn-outline-dark">비속어등록</a> -->
 		</div>
 	</div>
 </body>
